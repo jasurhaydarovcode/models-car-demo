@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import DarkModeToggle from "../../components/DarkModeToggle";
+import VideoCrumb from '../../components/breadcrumb/VideoCrumb';
 
 const videoData = {
   mercedes: {
@@ -40,6 +42,14 @@ const videoData = {
       text: 'With its refined ride and powerful engine options, the 5 Series is a top performer in the luxury sedan market.',
     },
   },
+  rolceroyce: {
+    'cullinan': {
+      title: 'Rolce Royce Cullinan',
+      description: 'Rolls-Royce Limited was a British luxury car and later an aero-engine manufacturing business established in 1904 in Manchester by the partnership of Charles Rolls and Henry',
+      videoUrl: '',
+      iframe: 'https://www.youtube.com/embed/MlLcjnZ403U?si=rGstBPt_uRrALEET'
+    }
+  }
 };
 
 const VideoDetail = () => {
@@ -48,35 +58,37 @@ const VideoDetail = () => {
   const videoDetail = brandData ? brandData[modelId] : null;
 
   return (
-    <div className="container mx-auto p-4">
-      {videoDetail ? (
-        <>
-          <h1 className="text-3xl font-bold mb-4">{videoDetail.title}</h1>
-          <p className="text-lg text-gray-600 mb-4">{videoDetail.description}</p>
-          {videoDetail.videoUrl ? (
-            <video controls className="w-full mb-6">
-              <source src={videoDetail.videoUrl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <div className="w-full mb-6">
-              <iframe
-                width="100%"
-                height="700"
-                src={videoDetail.iframe}
-                title={videoDetail.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="h-[200px] md:h-[700px]"
-              ></iframe>
+    <div className='dark:bg-neutral-950 dark:text-white min-h-screen'>
+      <VideoCrumb brand={id} title={videoDetail ? videoDetail.title : 'Video Detail'} />
+      <div className="container mx-auto p-4">
+        {videoDetail ? (
+          <>
+            <div className='flex items-center justify-between'>
+              <h1 className="text-3xl font-bold mb-4">{videoDetail.title}</h1>
+              <DarkModeToggle />
             </div>
-          )}
-          <p>{videoDetail.text}</p>
-        </>
-      ) : (
-        <p>Video not available.</p>
-      )}
+            <p className="text-lg text-gray-600 dark:text-white mb-4">{videoDetail.description}</p>
+            {videoDetail.videoUrl ? (
+              <video controls className="w-full mb-6">
+                <source src={videoDetail.videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <div className="w-full mb-6">
+                <iframe
+                  width="100%" height="700"
+                  src={videoDetail.iframe} title={videoDetail.title} frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen
+                  className="h-[200px] md:h-[700px]"
+                ></iframe>
+              </div>
+            )}
+            <p>{videoDetail.text}</p>
+          </>
+        ) : (
+          <p>Video not available.</p>
+        )}
+      </div>
     </div>
   );
 };
